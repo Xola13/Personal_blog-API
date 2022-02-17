@@ -26,21 +26,39 @@ function authenticationToken(req, res, next) {
 
 
 // USER REGISTRATION
-router.post('/', async (req, res) => {
 
-   const{name, email, contact, password} = req.body;
-   if(!name || !email || !contact || !password)
-   res.status(400).send({msg: "Not all fields have been submitted"});
+router.post('/',async(req, res) =>{
+  const {name, email, contact, password} =req.body;
+  if(!name || !email || !contact ||  !password)
+  res.status(400).send({msg:"not all data inserted"});
+  try {
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(password, salt)
+    var sql = ` INSERT INTO Users (user_name, user_email, user_contact, user_password) VALUES ('${name}', '${email}', '${contact}','${hashedPassword}')`;
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("1 record inserted");
+    });
+  } catch (error) {
+    res.status(500).send()
+  }
+  });
 
-   const salt = bcrypt.genSalt();
-   const hashedpassword = await bcrypt.hash(password, salt);
+// router.post('/', async (req, res) => {
 
-   var sql = `INSERT INTO Users (user_name, user_email, user_contact, user_password) VALUES ('${name}','${email}','${contact}','${hashedpassword}')`;
-        con.query(sql, function (err, result) {
-          if (err) throw err;
-          console.log("1 record inserted");
-      });
-});
+//    const{name, email, contact, password} = req.body;
+//    if(!name || !email || !contact || !password)
+//    res.status(400).send({msg: "Not all fields have been submitted"});
+
+//    const salt = bcrypt.genSalt();
+//    const hashedpassword = await bcrypt.hash(password, salt);
+
+//    var sql = `INSERT INTO Users (user_name, user_email, user_contact, user_password) VALUES ('${name}','${email}','${contact}','${hashedpassword}')`;
+//         con.query(sql, function (err, result) {
+//           if (err) throw err;
+//           console.log("1 record inserted");
+//       });
+// });
 
 // GET ALL USERS
 

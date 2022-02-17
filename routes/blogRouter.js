@@ -21,21 +21,6 @@ function getToday() {
 
 
 
-// BLOG POST
-
-// router.post('/', (req, res, next)=>{
-    
-//     const{title, body, date, author} = req.body;
-//     if(!title || !body || !date || !author)
-//     res.status(400).send({msg: "Not all fields have been submitted"});
- 
-//     var sql = `INSERT INTO Posts (post_title, post_body, post_date, post_author) VALUES ('${title}','${body}','${date}','${author}')`;
-//          con.query(sql, function (err, result) {
-//            if (err) throw err;
-//            console.log("1 record inserted");
-//        });
-//  });
-
  // GET ALL BLOG POSTS
  
 router.get('/', authenticateToken, (req, res, next) => {
@@ -58,7 +43,7 @@ if(!title || !body) res.sendStatus(400);
 
 res.send(user);
 
-var sql = `INSERT INTO Posts (post_title, post_body) VALUES ('${title}','${body}','${getToday}','${req.user.user_id}')`;
+var sql = `INSERT INTO Posts (post_title, post_body) VALUES ('${title}','${body}','${getToday}','${user.user_id}')`;
           con.query(sql, function (err, result) {
             // if (err) throw err;
             // console.log("1 record inserted");
